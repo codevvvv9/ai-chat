@@ -2,7 +2,7 @@
 
 一个基于 `pnpm workspace` 的最小 monorepo 示例工程，包含：
 
-- `apps/web`: `Vite + React + TypeScript + shadcn/ui`
+- `apps/web`: `Vite + React + TypeScript + Ant Design`
 - `apps/server`: `Express + TypeScript + MySQL(mysql2)`
 
 当前仅包含可运行的占位代码与基础依赖，不包含业务实现。

@@ -1,31 +1,25 @@
 # `apps/web`
 
-前端子工程，基于 `Vite + React + TypeScript + Tailwind CSS + shadcn/ui`。当前只提供最小可运行骨架和占位页面，没有业务功能。
+前端子工程，基于 `Vite + React + TypeScript + Ant Design`。当前只提供最小可运行骨架和占位页面，没有业务功能。
 
 ## 目录
 
 ```text
 apps/web
-├── components.json
 ├── index.html
 ├── package.json
-├── postcss.config.js
-├── tailwind.config.ts
 ├── tsconfig.json
 ├── vite.config.ts
 ├── dist/
 └── src/
+    ├── App.test.tsx
     ├── App.tsx
     ├── index.css
     ├── main.tsx
-    ├── components/
-    │   └── ui/
-    │       └── button.tsx
-    └── lib/
-        └── utils.ts
+    └── test-setup.ts
 ```
 
-`dist/` 是构建输出目录，当前仓库里已经存在产物文件，但它可以随时通过 `pnpm build` 重新生成。
+`dist/` 是构建输出目录，可以随时通过 `pnpm build` 重新生成。
 
 ## 依赖
 
@@ -33,25 +27,21 @@ apps/web
 
 - `react`
 - `react-dom`
-- `@radix-ui/react-slot`
-- `class-variance-authority`
-- `clsx`
-- `tailwind-merge`
+- `antd`
 
 开发依赖：
 
 - `vite`
 - `@vitejs/plugin-react`
 - `typescript`
-- `tailwindcss`
-- `postcss`
-- `autoprefixer`
-- `tailwindcss-animate`
+- `vitest`
+- `jsdom`
+- `@testing-library/react`
+- `@testing-library/jest-dom`
 - `@types/react`
 - `@types/react-dom`
-- `@types/node`
 
-`shadcn/ui` 相关配置在 `components.json` 中，当前只落地了一个按钮组件：`src/components/ui/button.tsx`。
+前端不再保留 `shadcn/ui`、Tailwind CSS 和 PostCSS 相关配置文件。
 
 ## 启动方式
 
@@ -85,9 +75,15 @@ pnpm build
 pnpm build
 ```
 
-## Typecheck
+## 测试与 Typecheck
 
-在仓库根目录运行：
+在仓库根目录运行前端测试：
+
+```bash
+pnpm --filter web test
+```
+
+在仓库根目录运行类型检查：
 
 ```bash
 pnpm check
@@ -103,13 +99,13 @@ pnpm typecheck
 
 ## 占位页面
 
-`src/App.tsx` 目前渲染的是一个最小占位页：
+`src/App.tsx` 当前渲染的是一个最小的 Ant Design 占位页：
 
-- 全屏背景使用了基础的径向渐变和线性渐变
-- 中央卡片展示项目标题和说明文字
-- 页面中放了一个 `shadcn/ui` 的 `Button` 示例
+- 使用 `ConfigProvider` 注入基础主题 token
+- 使用 `Card`、`Typography`、`Tag`、`Button` 组合出说明卡片
+- 页面样式由 `antd/dist/reset.css` 和 `src/index.css` 的少量全局样式共同提供
 
-页面入口是 `src/main.tsx`，它会挂载到 `index.html` 里的 `#root`。基础样式和主题变量定义在 `src/index.css`，`@` 别名指向 `src/`，用于导入组件和工具函数。
+页面入口是 `src/main.tsx`，它会挂载到 `index.html` 里的 `#root`。`src/App.test.tsx` 用于验证占位页已切换到 Ant Design 文案和按钮。
 
 ## 与根工程的关系
 

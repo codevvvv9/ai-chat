@@ -2,7 +2,7 @@
 
 这是一个基于 `pnpm workspace` 的 monorepo 示例工程，包含一个前端子工程和一个后端子工程：
 
-- 前端：`Vite + React + TypeScript + shadcn/ui`
+- 前端：`Vite + React + TypeScript + Ant Design`
 - 后端：`Node + Express + TypeScript + MySQL(mysql2)`
 
 当前阶段仅提供脚手架、依赖与最小占位示例代码，不包含业务功能。

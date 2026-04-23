@@ -1,25 +1,55 @@
-import { Button } from "@/components/ui/button";
+import {
+  App as AntApp,
+  Button,
+  Card,
+  ConfigProvider,
+  Space,
+  Tag,
+  Typography,
+  theme,
+} from "antd";
+
+const { Title, Paragraph, Text } = Typography;
 
 export default function App() {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.08),_transparent_32%),linear-gradient(180deg,_hsl(var(--background)),_hsl(var(--muted)/0.18))] px-6 py-10 text-foreground">
-      <section className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-3xl items-center">
-        <div className="w-full rounded-[2rem] border border-border bg-card/95 p-8 shadow-soft backdrop-blur">
-          <p className="text-sm font-medium uppercase tracking-[0.28em] text-muted-foreground">
-            ai-chat / web
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-            TypeScript + Vite + React + Tailwind + shadcn/ui
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-            这里是 `apps/web` 的最小可运行骨架，只保留页面占位、基础样式和
-            shadcn 按钮示例，不包含任何业务逻辑。
-          </p>
-          <div className="mt-8">
-            <Button>shadcn 按钮</Button>
-          </div>
-        </div>
-      </section>
-    </main>
+    <ConfigProvider
+      theme={{
+        algorithm: theme.defaultAlgorithm,
+        token: {
+          colorPrimary: "#1677ff",
+          borderRadius: 18,
+          fontFamily:
+            '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif',
+        },
+      }}
+    >
+      <AntApp>
+        <main className="app-shell">
+          <Card className="app-card" variant="borderless">
+            <Space direction="vertical" size={20}>
+              <Tag color="blue">ai-chat / web</Tag>
+              <Space direction="vertical" size={8}>
+                <Title level={1} style={{ margin: 0 }}>
+                  TypeScript + Vite + React + Ant Design
+                </Title>
+                <Paragraph className="app-description">
+                  这里是 `apps/web` 的最小可运行骨架，只保留页面占位、Ant
+                  Design 组件示例和基础样式，不包含任何业务逻辑。
+                </Paragraph>
+              </Space>
+              <Space size={12} wrap>
+                <Button type="primary" size="large">
+                  Ant Design 按钮
+                </Button>
+                <Text type="secondary">
+                  其余工程结构与启动方式保持不变。
+                </Text>
+              </Space>
+            </Space>
+          </Card>
+        </main>
+      </AntApp>
+    </ConfigProvider>
   );
 }
