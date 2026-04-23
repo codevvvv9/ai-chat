@@ -1,0 +1,17 @@
+{
+  "name": "ai-chat-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:web\" \"pnpm dev:server\"",
+    "dev:native": "pnpm --parallel --filter web --filter server dev",
+    "build": "pnpm -r --filter web --filter server build",
+    "check": "pnpm -r --filter web --filter server typecheck",
+    "dev:web": "pnpm --filter web dev",
+    "dev:server": "pnpm --filter server dev",
+    "typecheck": "pnpm check"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
