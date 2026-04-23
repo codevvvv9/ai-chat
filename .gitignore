@@ -10,3 +10,5 @@ coverage
 *.tsbuildinfo
 .temp
 .worktrees
+
+.db

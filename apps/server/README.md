@@ -7,6 +7,7 @@
 ```text
 apps/server
 ├── .env.example
+├── docker-dev-compose.yml
 ├── package.json
 ├── tsconfig.json
 ├── src/
@@ -16,13 +17,17 @@ apps/server
 │   │   └── env.ts
 │   ├── db/
 │   │   └── mysql.ts
+│   ├── scripts/
+│   │   └── check-db.ts
+│   ├── store/
+│   │   └── database-example.ts
 │   └── routes/
 │       ├── example.ts
 │       └── health.ts
-└── dist/
+└── dist/ (构建后生成)
 ```
 
-`dist/` 是构建输出目录，当前仓库里已经存在产物文件，但它可以随时通过构建命令重新生成。
+`dist/` 是构建输出目录，可通过构建命令生成。
 
 ## 依赖
 
@@ -55,6 +60,35 @@ apps/server
 - `MYSQL_DATABASE`，默认 `ai_chat`
 - `MYSQL_CONNECTION_LIMIT`，默认 `10`
 
+## 本地数据库容器
+
+目录下提供了 [`docker-dev-compose.yml`](/Users/wushao/wushaoDev/ai-chat/apps/server/docker-dev-compose.yml)，用于本地开发时快速启动一个 MySQL 容器。
+
+在 `apps/server` 目录执行：
+
+```bash
+docker compose --env-file .env.example -f docker-dev-compose.yml up -d
+```
+
+当前配置特点：
+
+- 使用 `mysql:8.4`
+- 宿主机数据目录固定挂载到 `/Users/wushao/wushaoDev/ai-chat/.db`
+- 宿主机端口使用 `.env` 或 `.env.example` 中的 `MYSQL_PORT`
+- root 密码使用 `MYSQL_PASSWORD`
+- 应用数据库用户使用 `MYSQL_USER`
+- 应用数据库用户密码使用 `MYSQL_PASSWORD`
+- 数据库名使用 `MYSQL_DATABASE`
+- 需要密码登录，不再允许空密码
+
+这份 compose 文件通过 `--env-file .env` 或 `--env-file .env.example` 读取数据库相关变量。对于示例配置，默认值如下：
+
+- `MYSQL_HOST=127.0.0.1`
+- `MYSQL_PORT=3306`
+- `MYSQL_USER=ai_chat`
+- `MYSQL_PASSWORD=xxx`
+- `MYSQL_DATABASE=ai_chat_db`
+
 ## 启动方式
 
 在仓库根目录运行：
@@ -70,6 +104,16 @@ pnpm dev:server
 ```bash
 pnpm dev
 ```
+
+## 数据库连通检查
+
+如果已经启动了本地 MySQL docker 容器，可以在 `apps/server` 目录执行：
+
+```bash
+pnpm db:check
+```
+
+这条命令会运行 `src/scripts/check-db.ts`，通过 `src/store/database-example.ts` 进入 docker 里的 MySQL 容器执行一个最小查询，并输出当前数据库名和版本。
 
 ## 构建与运行
 
@@ -123,7 +167,9 @@ pnpm typecheck
 
 后端接口说明不再在本文件中逐项维护，统一以共享入口 `docs/api/README.md` 为准。
 
-MySQL 连接池初始化位于 `src/db/mysql.ts`，目前只是基础占位，不包含实际业务访问逻辑。
+MySQL 连接池初始化位于 `src/db/mysql.ts`。
+
+`src/store/database-example.ts` 提供了一个最小示例：通过 `docker compose exec` 进入本地 MySQL 容器并执行 `SELECT DATABASE(), VERSION()`，用于验证后端代码可以连到 docker 里的数据库。
 
 ## 与根工程的关系
 
